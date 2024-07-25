@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chatbot</title>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <form action="/chat" method="post">
+        <input type="text" name="message" placeholder="Type your message here...">
+        <button type="submit">Send</button>
+    </form>
+    <script>
+        document.querySelector("form").addEventListener("submit", function (event) {
+            event.preventDefault();
+            const form = event.target;
+            const messageInput = form.querySelector("[name=message]");
+            const message = messageInput.value;
+
+            fetch("/chat", {
+                method: "POST",
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: "message=" + encodeURIComponent(message)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data.response);
+                    // You can update the UI here to display the bot's response
+                });
+            messageInput.value = "";
+        });
+    </script>
+</body>
+</html>
